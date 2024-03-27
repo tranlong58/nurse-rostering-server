@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model staff {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  schedules schedule[]
+}
+
+model shift {
+  id            Int        @id @default(autoincrement())
+  kind          String
+  date          String
+  numberOfStaff Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  schedules     schedule[]
+}
+
+model schedule {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  staffId   Int
+  shiftId   Int
+  staff     staff    @relation(fields: [staffId], references: [id])
+  shift     shift    @relation(fields: [shiftId], references: [id])
+}
