@@ -20,7 +20,7 @@ model admin {
 }
 
 model staff {
-  id        Int        @id @default(autoincrement())
+  id        Int        @unique
   name      String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
