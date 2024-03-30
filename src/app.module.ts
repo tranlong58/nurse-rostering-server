@@ -6,6 +6,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './api/auth/auth.module';
 import { StaffModule } from './api/staff/staff.module';
+import { ShiftModule } from './api/shift/shift.module';
+import { TimeOffModule } from './api/timeOff/timeOff.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { StaffModule } from './api/staff/staff.module';
     JwtModule,
     AuthModule,
     StaffModule,
+    ShiftModule,
+    TimeOffModule,
   ],
   controllers: [AppController],
   providers: [AppService],

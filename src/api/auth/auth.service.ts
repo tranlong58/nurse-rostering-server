@@ -29,7 +29,7 @@ export class AuthService {
     });
 
     if (!admin || data.password !== admin.password) {
-      throw new BadRequestException('wrong email or password');
+      throw new BadRequestException('Incorrect email or password');
     }
 
     return {

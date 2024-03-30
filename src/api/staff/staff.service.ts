@@ -30,7 +30,7 @@ export class StaffService {
     });
 
     if (!staff) {
-      throw new BadRequestException('wrong id');
+      throw new BadRequestException('Staff does not exist');
     }
 
     return staff;
@@ -44,7 +44,7 @@ export class StaffService {
     });
 
     if (staff) {
-      throw new BadRequestException('id already exists');
+      throw new BadRequestException('Staff already exists');
     }
 
     return this.prismaService.staff.create({
@@ -68,7 +68,15 @@ export class StaffService {
     });
 
     if (!staff) {
-      throw new BadRequestException('wrong id');
+      throw new BadRequestException('Staff does not exist');
+    }
+
+    const isIdExist = await this.prismaService.staff.findUnique({
+      where: { id: data.id },
+    });
+
+    if (staff.id !== data.id && isIdExist) {
+      throw new BadRequestException('New id already exists');
     }
 
     return this.prismaService.staff.update({
@@ -92,8 +100,12 @@ export class StaffService {
     });
 
     if (!staff) {
-      throw new BadRequestException('wrong id');
+      throw new BadRequestException('Shift does not exist');
     }
+
+    await this.prismaService.timeOff.deleteMany({ where: { staffId: id } });
+
+    await this.prismaService.schedule.deleteMany({ where: { staffId: id } });
 
     await this.prismaService.staff.delete({ where: { id: id } });
   }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
-import { StaffController } from './staff.controller';
-import { StaffService } from './staff.service';
+import { ShiftService } from './shift.service';
+import { ShiftController } from './shift.controller';
 
 @Module({
   imports: [PrismaModule, JwtModule],
-  controllers: [StaffController],
-  providers: [StaffService],
+  controllers: [ShiftController],
+  providers: [ShiftService],
 })
-export class StaffModule {}
+export class ShiftModule {}
