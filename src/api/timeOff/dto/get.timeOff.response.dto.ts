@@ -3,6 +3,6 @@ export class GetTimeOffResponseDto {
   staffId: number;
   shiftId: number;
   name: string;
-  date: string;
+  day: string;
   kind: string;
 }

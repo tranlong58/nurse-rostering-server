@@ -8,7 +8,7 @@ export class UpdateShiftRequestDto {
 
   @IsNotEmpty()
   @ApiProperty({ example: 0 })
-  date: number;
+  day: number;
 
   @IsNotEmpty()
   @ApiProperty({ example: 2 })

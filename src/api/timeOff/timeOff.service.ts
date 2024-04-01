@@ -7,7 +7,7 @@ export class TimeOffService {
   constructor(private prismaService: PrismaService) {}
 
   private KIND: string[] = ['Morning', 'Afternoon', 'Evening', 'Night'];
-  private DATE: string[] = [
+  private DAY: string[] = [
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -22,7 +22,7 @@ export class TimeOffService {
       include: { staff: true, shift: true },
       orderBy: [
         { staffId: 'asc' },
-        { shift: { date: 'asc' } },
+        { shift: { day: 'asc' } },
         { shift: { kind: 'asc' } },
       ],
     });
@@ -35,7 +35,7 @@ export class TimeOffService {
         staffId: item.staffId,
         shiftId: item.shiftId,
         name: item.staff.name,
-        date: this.DATE[item.shift.date],
+        day: this.DAY[item.shift.day],
         kind: this.KIND[item.shift.kind],
       });
     }

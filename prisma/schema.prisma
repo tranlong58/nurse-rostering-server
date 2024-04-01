@@ -22,45 +22,61 @@ model admin {
 model staff {
   id        Int        @unique
   name      String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
   timeOffs  timeOff[]
   schedules schedule[]
+  drafts    draft[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model shift {
   id            Int        @id @default(autoincrement())
   kind          Int
-  date          Int
+  day           Int
   numberOfStaff Int
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
   timeOffs      timeOff[]
   schedules     schedule[]
+  drafts        draft[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
-  @@unique([kind, date])
+  @@unique([kind, day])
 }
 
 model schedule {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  date      DateTime
   staffId   Int
   shiftId   Int
   staff     staff    @relation(fields: [staffId], references: [id])
   shift     shift    @relation(fields: [shiftId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([staffId, shiftId])
 }
 
 model timeOff {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   staffId   Int
   shiftId   Int
   staff     staff    @relation(fields: [staffId], references: [id])
   shift     shift    @relation(fields: [shiftId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([staffId, shiftId])
+}
+
+model draft {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  staffId   Int
+  shiftId   Int
+  staff     staff    @relation(fields: [staffId], references: [id])
+  shift     shift    @relation(fields: [shiftId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([staffId, shiftId])
 }

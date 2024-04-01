@@ -12,7 +12,7 @@ export class ShiftService {
   constructor(private prismaService: PrismaService) {}
 
   private KIND: string[] = ['Morning', 'Afternoon', 'Evening', 'Night'];
-  private DATE: string[] = [
+  private DAY: string[] = [
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -26,12 +26,12 @@ export class ShiftService {
       select: {
         id: true,
         kind: true,
-        date: true,
+        day: true,
         numberOfStaff: true,
       },
       orderBy: [
         {
-          date: 'asc',
+          day: 'asc',
         },
         {
           kind: 'asc',
@@ -45,7 +45,7 @@ export class ShiftService {
       data.push({
         id: shift.id,
         kind: this.KIND[shift.kind],
-        date: this.DATE[shift.date],
+        day: this.DAY[shift.day],
         numberOfStaff: shift.numberOfStaff,
       });
     }
@@ -59,7 +59,7 @@ export class ShiftService {
       select: {
         id: true,
         kind: true,
-        date: true,
+        day: true,
         numberOfStaff: true,
       },
     });
@@ -71,7 +71,7 @@ export class ShiftService {
     return {
       id: shift.id,
       kind: this.KIND[shift.kind],
-      date: this.DATE[shift.date],
+      day: this.DAY[shift.day],
       numberOfStaff: shift.numberOfStaff,
     };
   }
@@ -80,7 +80,7 @@ export class ShiftService {
     data: CreateShiftRequestDto,
   ): Promise<CreateShiftResponseDto> {
     const shift = await this.prismaService.shift.findMany({
-      where: { AND: [{ kind: data.kind, date: data.date }] },
+      where: { AND: [{ kind: data.kind, day: data.day }] },
     });
 
     if (shift.length > 0) {
@@ -90,13 +90,13 @@ export class ShiftService {
     const newShift = await this.prismaService.shift.create({
       data: {
         kind: data.kind,
-        date: data.date,
+        day: data.day,
         numberOfStaff: data.numberOfStaff,
       },
       select: {
         id: true,
         kind: true,
-        date: true,
+        day: true,
         numberOfStaff: true,
       },
     });
@@ -104,7 +104,7 @@ export class ShiftService {
     return {
       id: newShift.id,
       kind: this.KIND[newShift.kind],
-      date: this.DATE[newShift.date],
+      day: this.DAY[newShift.day],
       numberOfStaff: newShift.numberOfStaff,
     };
   }
@@ -122,11 +122,11 @@ export class ShiftService {
     }
 
     const isKindDateExist = await this.prismaService.shift.findMany({
-      where: { AND: [{ kind: data.kind, date: data.date }] },
+      where: { AND: [{ kind: data.kind, day: data.day }] },
     });
 
     if (
-      (shift.date !== data.date || shift.kind !== data.kind) &&
+      (shift.day !== data.day || shift.kind !== data.kind) &&
       isKindDateExist.length > 0
     ) {
       throw new BadRequestException('New kind-date already exists');
@@ -138,13 +138,13 @@ export class ShiftService {
       },
       data: {
         kind: data.kind,
-        date: data.date,
+        day: data.day,
         numberOfStaff: data.numberOfStaff,
       },
       select: {
         id: true,
         kind: true,
-        date: true,
+        day: true,
         numberOfStaff: true,
       },
     });
@@ -152,7 +152,7 @@ export class ShiftService {
     return {
       id: newShift.id,
       kind: this.KIND[newShift.kind],
-      date: this.DATE[newShift.date],
+      day: this.DAY[newShift.day],
       numberOfStaff: newShift.numberOfStaff,
     };
   }

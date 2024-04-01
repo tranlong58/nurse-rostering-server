@@ -1,6 +1,6 @@
 export class CreateShiftResponseDto {
   id: number;
   kind: string;
-  date: string;
+  day: string;
   numberOfStaff: number;
 }

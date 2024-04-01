@@ -10,7 +10,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TimeOffService } from './timeOff.service';
 import { AuthGuard } from '../../auth/auth.guard';
-import { CreateTimeOffRequestDto, GetTimeOffResponseDto } from './dto';
+import { CreateTimeOffRequestDto } from './dto';
 
 @Controller('time-off')
 @ApiTags('Time off')

@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStaffRequestDto {
   @IsNotEmpty()
-  @ApiProperty({ example: 20194102 })
+  @ApiProperty({ example: 4102 })
   id: number;
 
   @IsNotEmpty()
