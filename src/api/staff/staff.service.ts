@@ -44,7 +44,7 @@ export class StaffService {
     });
 
     if (staff) {
-      throw new BadRequestException('Staff already exists');
+      throw new BadRequestException('ID already exists');
     }
 
     return this.prismaService.staff.create({
@@ -76,7 +76,7 @@ export class StaffService {
     });
 
     if (staff.id !== data.id && isIdExist) {
-      throw new BadRequestException('New id already exists');
+      throw new BadRequestException('ID already exists');
     }
 
     return this.prismaService.staff.update({
