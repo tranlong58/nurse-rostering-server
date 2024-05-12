@@ -24,7 +24,6 @@ model staff {
   name      String
   timeOffs  timeOff[]
   schedules schedule[]
-  drafts    draft[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
@@ -35,8 +34,6 @@ model shift {
   day           Int
   numberOfStaff Int
   timeOffs      timeOff[]
-  schedules     schedule[]
-  drafts        draft[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
@@ -47,30 +44,16 @@ model schedule {
   id        Int      @id @default(autoincrement())
   date      DateTime
   staffId   Int
-  shiftId   Int
+  shiftKind Int
   staff     staff    @relation(fields: [staffId], references: [id])
-  shift     shift    @relation(fields: [shiftId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([staffId, shiftId])
+  @@unique([staffId, date])
 }
 
 model timeOff {
   id        Int      @id @default(autoincrement())
-  staffId   Int
-  shiftId   Int
-  staff     staff    @relation(fields: [staffId], references: [id])
-  shift     shift    @relation(fields: [shiftId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([staffId, shiftId])
-}
-
-model draft {
-  id        Int      @id @default(autoincrement())
-  date      DateTime
   staffId   Int
   shiftId   Int
   staff     staff    @relation(fields: [staffId], references: [id])

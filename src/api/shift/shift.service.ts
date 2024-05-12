@@ -21,6 +21,7 @@ export class ShiftService {
     'Saturday',
     'Sunday',
   ];
+
   async getAllShift(): Promise<GetShiftResponseDto[]> {
     const listShift = await this.prismaService.shift.findMany({
       select: {
@@ -84,7 +85,7 @@ export class ShiftService {
     });
 
     if (shift.length > 0) {
-      throw new BadRequestException('Shift already exists');
+      throw new BadRequestException('Kind-date already exists');
     }
 
     const newShift = await this.prismaService.shift.create({
@@ -129,7 +130,7 @@ export class ShiftService {
       (shift.day !== data.day || shift.kind !== data.kind) &&
       isKindDateExist.length > 0
     ) {
-      throw new BadRequestException('New kind-date already exists');
+      throw new BadRequestException('Kind-date already exists');
     }
 
     const newShift = await this.prismaService.shift.update({
@@ -167,8 +168,6 @@ export class ShiftService {
     }
 
     await this.prismaService.timeOff.deleteMany({ where: { shiftId: id } });
-
-    await this.prismaService.schedule.deleteMany({ where: { shiftId: id } });
 
     await this.prismaService.shift.delete({ where: { id: id } });
   }
