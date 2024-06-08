@@ -22,7 +22,6 @@ model admin {
 model staff {
   id        Int        @unique
   name      String
-  timeOffs  timeOff[]
   schedules schedule[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -33,7 +32,6 @@ model shift {
   kind          Int
   day           Int
   numberOfStaff Int
-  timeOffs      timeOff[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
@@ -45,21 +43,18 @@ model schedule {
   date      DateTime
   staffId   Int
   shiftKind Int
+  historyId Int      @default(1)
   staff     staff    @relation(fields: [staffId], references: [id])
+  history   history  @relation(fields: [historyId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([staffId, date])
 }
 
-model timeOff {
+model history {
   id        Int      @id @default(autoincrement())
-  staffId   Int
-  shiftId   Int
-  staff     staff    @relation(fields: [staffId], references: [id])
-  shift     shift    @relation(fields: [shiftId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([staffId, shiftId])
+  start     DateTime
+  end       DateTime
+  schedules schedule[]
 }

@@ -7,8 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './api/auth/auth.module';
 import { StaffModule } from './api/staff/staff.module';
 import { ShiftModule } from './api/shift/shift.module';
-import { TimeOffModule } from './api/timeOff/timeOff.module';
 import { ScheduleModule } from './api/schedule/schedule.module';
+import { HistoryModule } from './api/history/history.module';
 
 @Module({
   imports: [
@@ -20,8 +20,8 @@ import { ScheduleModule } from './api/schedule/schedule.module';
     AuthModule,
     StaffModule,
     ShiftModule,
-    TimeOffModule,
     ScheduleModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

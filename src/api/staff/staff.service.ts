@@ -103,8 +103,6 @@ export class StaffService {
       throw new BadRequestException('Shift does not exist');
     }
 
-    await this.prismaService.timeOff.deleteMany({ where: { staffId: id } });
-
     await this.prismaService.schedule.deleteMany({ where: { staffId: id } });
 
     await this.prismaService.staff.delete({ where: { id: id } });

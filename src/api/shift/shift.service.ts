@@ -167,8 +167,19 @@ export class ShiftService {
       throw new BadRequestException('Shift does not exist');
     }
 
-    await this.prismaService.timeOff.deleteMany({ where: { shiftId: id } });
-
     await this.prismaService.shift.delete({ where: { id: id } });
+
+    const kind = shift.kind;
+    const day = shift.day === 6 ? 0 : shift.day + 1; 
+
+    const allSchedules = await this.prismaService.schedule.findMany();
+
+    const deleteSchedules = allSchedules.filter(schedule => {
+      return schedule.date.getDay() === day && schedule.shiftKind === kind;
+    })
+
+    for (const schedule of deleteSchedules) {
+      await this.prismaService.schedule.delete({ where: { id: schedule.id}});
+    }
   }
 }
