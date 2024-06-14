@@ -11,6 +11,13 @@ import { CreateScheduleRequestDto } from './dto';
 export class ScheduleController {
   constructor(private scheduleService: ScheduleService) {}
 
+  @Get('statistic')
+  @ApiOperation({ summary: 'Get statistic' })
+  async getStatistic() {
+    const data = await this.scheduleService.getStatistic();
+    return { data, message: 'Success' };
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get all schedule' })
   async getSchedule(@Param('id') id: string) {

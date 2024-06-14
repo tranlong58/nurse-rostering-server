@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateScheduleRequestDto, GetScheduleResponseDto, ScheduleType } from './dto';
+import { CreateScheduleRequestDto, GetScheduleResponseDto, GetStatisticResponseDto, ScheduleType } from './dto';
 @Injectable()
 export class ScheduleService {
   constructor(private prismaService: PrismaService) {}
@@ -127,5 +127,37 @@ export class ScheduleService {
     }
 
     return;
+  }
+
+  async getStatistic(): Promise<GetStatisticResponseDto[]> {
+    const res: GetStatisticResponseDto[] = []
+
+    const staffs = await this.prismaService.staff.findMany();
+    const schedules = await this.prismaService.schedule.findMany();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for(let i=0; i<staffs.length; i++) {
+      const obj = {
+        staffId: staffs[i].id,
+        staffName: staffs[i].name,
+        completed: [0, 0, 0, 0],
+        total: [0, 0, 0, 0],
+      }
+
+      for(let j=0; j<schedules.length; j++) {
+        if(schedules[j].staffId === staffs[i].id) {
+          obj.total[schedules[j].shiftKind]++;
+
+          if(schedules[j].date < today) {
+            obj.completed[schedules[j].shiftKind]++;
+          }
+        }
+      }
+
+      res.push(obj)
+    }
+
+    return res;
   }
 }
