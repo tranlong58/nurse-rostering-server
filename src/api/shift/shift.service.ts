@@ -79,35 +79,24 @@ export class ShiftService {
 
   async createShift(
     data: CreateShiftRequestDto,
-  ): Promise<CreateShiftResponseDto> {
+  ): Promise<void> {
     const shift = await this.prismaService.shift.findMany({
-      where: { AND: [{ kind: data.kind, day: data.day }] },
-    });
+      where: { day: data.day}
+    })
 
     if (shift.length > 0) {
-      throw new BadRequestException('Kind-date already exists');
+      throw new BadRequestException('Day already exists');
     }
 
-    const newShift = await this.prismaService.shift.create({
-      data: {
-        kind: data.kind,
-        day: data.day,
-        numberOfStaff: data.numberOfStaff,
-      },
-      select: {
-        id: true,
-        kind: true,
-        day: true,
-        numberOfStaff: true,
-      },
-    });
-
-    return {
-      id: newShift.id,
-      kind: this.KIND[newShift.kind],
-      day: this.DAY[newShift.day],
-      numberOfStaff: newShift.numberOfStaff,
-    };
+    for(let i=0; i<data.numberOfStaff.length; i++) {
+      await this.prismaService.shift.create({
+        data: {
+          kind: i,
+          day: data.day,
+          numberOfStaff: data.numberOfStaff[i],
+        },
+      });
+    }
   }
 
   async updateShift(

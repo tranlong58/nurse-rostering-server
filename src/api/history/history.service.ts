@@ -27,13 +27,15 @@ export class HistoryService {
     });
 
     if (!history) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
       return {
-        maxDate: new Date(),
+        maxDate: yesterday,
       };
     }
 
     return {
-        maxDate: history.end,
+      maxDate: history.end,
     };
   }
 }
