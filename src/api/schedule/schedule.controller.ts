@@ -18,8 +18,15 @@ export class ScheduleController {
     return { data, message: 'Success' };
   }
 
+  @Get('today')
+  @ApiOperation({ summary: 'Get schedule today' })
+  async getScheduleToday() {
+    const data = await this.scheduleService.getScheduleToday();
+    return { data, message: 'Success' };
+  }
+
   @Get(':id')
-  @ApiOperation({ summary: 'Get all schedule' })
+  @ApiOperation({ summary: 'Get schedule by historyId' })
   async getSchedule(@Param('id') id: string) {
     const data = await this.scheduleService.getSchedule(+id);
     return { data, message: 'Success' };

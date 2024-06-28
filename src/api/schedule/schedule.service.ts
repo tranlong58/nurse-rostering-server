@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateScheduleRequestDto, GetScheduleResponseDto, GetStatisticResponseDto, ScheduleType } from './dto';
+import { CreateScheduleRequestDto, GetScheduleResponseDto, GetScheduleTodayResponseDto, GetStatisticResponseDto, ScheduleType } from './dto';
 @Injectable()
 export class ScheduleService {
   constructor(private prismaService: PrismaService) {}
@@ -54,6 +54,42 @@ export class ScheduleService {
       startDate: schedules[0].history.start,
       endDate: schedules[0].history.end,
       schedules: data,
+    };
+  }
+
+  async getScheduleToday(): Promise<GetScheduleTodayResponseDto> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const todayIndex = today.getDay() === 0 ? 6 : today.getDay()-1;
+
+    const scheduleToday = await this.prismaService.schedule.findMany({
+      where: {date: today},
+      include: {staff: true},
+    })
+
+    const detail = [[], [], [], []];
+    for (const schedule of scheduleToday) { 
+      detail[schedule.shiftKind].push({
+        name: schedule.staff.name,
+        staffId: schedule.staffId,
+      })
+    }
+
+    const shiftToday = await this.prismaService.shift.findMany({
+      where: {day: todayIndex}
+    })
+
+    const listMaxStaff = [0, 0, 0, 0];
+
+    shiftToday.forEach((item) => {
+      listMaxStaff[item.kind] = item.numberOfStaff
+    })
+
+    return {
+      detail,
+      listMaxStaff,
+      id: [0, 1, 2, 3],
     };
   }
 
