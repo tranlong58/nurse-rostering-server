@@ -59,7 +59,9 @@ export class ScheduleService {
 
   async getScheduleToday(): Promise<GetScheduleTodayResponseDto> {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(-1, 0, 0, 0);
+
+    console.log(today);
 
     const todayIndex = today.getDay() === 0 ? 6 : today.getDay()-1;
 
@@ -171,7 +173,7 @@ export class ScheduleService {
     const staffs = await this.prismaService.staff.findMany();
     const schedules = await this.prismaService.schedule.findMany();
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(-1, 0, 0, 0);
 
     for(let i=0; i<staffs.length; i++) {
       const obj = {
