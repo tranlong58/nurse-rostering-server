@@ -59,7 +59,7 @@ export class ScheduleService {
 
   async getScheduleToday(): Promise<GetScheduleTodayResponseDto> {
     const today = new Date();
-    // today.setHours(-1, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
     console.log(today);
 
@@ -173,8 +173,8 @@ export class ScheduleService {
     const staffs = await this.prismaService.staff.findMany();
     const schedules = await this.prismaService.schedule.findMany();
     const today = new Date();
-    today.setHours(-1, 0, 0, 0);
-
+    today.setHours(0, 0, 0, 0);
+    
     for(let i=0; i<staffs.length; i++) {
       const obj = {
         staffId: staffs[i].id,
