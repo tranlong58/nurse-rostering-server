@@ -59,9 +59,13 @@ export class ScheduleService {
 
   async getScheduleToday(): Promise<GetScheduleTodayResponseDto> {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    console.log(today);
+    if(today.getUTCHours() >= 17) {
+      today.setUTCHours(17, 0, 0, 0);
+    }
+    else {
+      today.setUTCHours(17, 0, 0, 0);
+      today.setUTCDate(today.getUTCDate() - 1);
+    }
 
     const todayIndex = today.getDay() === 0 ? 6 : today.getDay()-1;
 
@@ -173,7 +177,13 @@ export class ScheduleService {
     const staffs = await this.prismaService.staff.findMany();
     const schedules = await this.prismaService.schedule.findMany();
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    if(today.getUTCHours() >= 17) {
+      today.setUTCHours(17, 0, 0, 0);
+    }
+    else {
+      today.setUTCHours(17, 0, 0, 0);
+      today.setUTCDate(today.getUTCDate() - 1);
+    }
     
     for(let i=0; i<staffs.length; i++) {
       const obj = {
