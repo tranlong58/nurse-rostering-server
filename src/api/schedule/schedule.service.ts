@@ -59,7 +59,7 @@ export class ScheduleService {
 
   async getScheduleToday(): Promise<GetScheduleTodayResponseDto> {
     const today = new Date();
-    today.setHours(-1, 0, 0, 0);
+    // today.setHours(-1, 0, 0, 0);
 
     console.log(today);
 
