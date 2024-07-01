@@ -59,6 +59,8 @@ export class ScheduleService {
 
   async getScheduleToday(): Promise<GetScheduleTodayResponseDto> {
     const today = new Date();
+    const todayIndex = today.getDay() === 0 ? 6 : today.getDay()-1;
+
     if(today.getUTCHours() >= 17) {
       today.setUTCHours(17, 0, 0, 0);
     }
@@ -67,7 +69,7 @@ export class ScheduleService {
       today.setUTCDate(today.getUTCDate() - 1);
     }
 
-    const todayIndex = today.getDay() === 0 ? 6 : today.getDay()-1;
+    console.log(today, todayIndex)
 
     const scheduleToday = await this.prismaService.schedule.findMany({
       where: {date: today},
