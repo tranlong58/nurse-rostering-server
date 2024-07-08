@@ -69,8 +69,6 @@ export class ScheduleService {
       today.setUTCDate(today.getUTCDate() - 1);
     }
 
-    console.log(today, todayIndex)
-
     const scheduleToday = await this.prismaService.schedule.findMany({
       where: {date: today},
       include: {staff: true},
